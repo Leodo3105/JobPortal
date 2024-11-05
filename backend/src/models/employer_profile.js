@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // Đảm bảo đường dẫn tới file cấu hình đúng
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';// Đảm bảo đường dẫn tới file cấu hình đúng
 
 const EmployerProfile = sequelize.define('EmployerProfile', {
     id: {
@@ -11,7 +11,7 @@ const EmployerProfile = sequelize.define('EmployerProfile', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'users', // Tên của bảng `users`
+            model: 'users', 
             key: 'id'
         },
         onDelete: 'CASCADE'
@@ -32,7 +32,7 @@ const EmployerProfile = sequelize.define('EmployerProfile', {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
-            model: 'districts', // Tên của bảng `districts`
+            model: 'districts',
             key: 'id'
         }
     },
@@ -40,7 +40,7 @@ const EmployerProfile = sequelize.define('EmployerProfile', {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
-            model: 'cities', // Tên của bảng `cities`
+            model: 'cities', 
             key: 'id'
         }
     },
@@ -48,7 +48,7 @@ const EmployerProfile = sequelize.define('EmployerProfile', {
         type: DataTypes.INTEGER,
         allowNull: true,
         references: {
-            model: 'countries', // Tên của bảng `countries`
+            model: 'countries', 
             key: 'id'
         }
     },
@@ -76,7 +76,7 @@ const EmployerProfile = sequelize.define('EmployerProfile', {
     }
 }, {
     tableName: 'employer_profiles',
-    timestamps: false // Vì đã có `created_at` và `updated_at`
+    timestamps: false 
 });
 
-module.exports = EmployerProfile;
+export default EmployerProfile;

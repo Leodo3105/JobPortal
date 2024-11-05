@@ -1,9 +1,9 @@
-const { Industry } = require('../../models');
+import Industry from '../../models/industry.js';
 
 // Thêm ngành nghề mới
-const addIndustry = async (req, res) => {
+export const addIndustry = async (req, res) => {
   const { name } = req.body;
-  
+
   try {
     const existingIndustry = await Industry.findOne({ where: { name } });
     if (existingIndustry) {
@@ -18,7 +18,7 @@ const addIndustry = async (req, res) => {
 };
 
 // Cập nhật tên ngành nghề
-const updateIndustry = async (req, res) => {
+export const updateIndustry = async (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
 
@@ -38,7 +38,7 @@ const updateIndustry = async (req, res) => {
 };
 
 // Xóa ngành nghề
-const deleteIndustry = async (req, res) => {
+export const deleteIndustry = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -55,7 +55,7 @@ const deleteIndustry = async (req, res) => {
 };
 
 // Lấy danh sách tất cả ngành nghề
-const getAllIndustries = async (req, res) => {
+export const getAllIndustries = async (_req, res) => {
   try {
     const industries = await Industry.findAll();
     res.status(200).json(industries);
@@ -63,5 +63,3 @@ const getAllIndustries = async (req, res) => {
     res.status(500).json({ message: 'An error occurred', error });
   }
 };
-
-module.exports = { addIndustry, updateIndustry, deleteIndustry, getAllIndustries };

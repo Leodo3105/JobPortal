@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
 
 const Industry = sequelize.define('Industry', {
   name: {
@@ -12,4 +12,4 @@ const Industry = sequelize.define('Industry', {
   timestamps: false,
 });
 
-module.exports = Industry;
+export default Industry;

@@ -2,13 +2,13 @@ const sequelize = require('../config/db'); // Đường dẫn đúng tới file 
 
 // Import tất cả các model
 const User = require('./user');
-const EmployerProfile = require('./employer_profile');
+const EmployerProfile = require('./employer_profile').default;
 const District = require('./district');
 const City = require('./city');
 const Country = require('./country');
 const Industry = require('./industry');
 const JobType = require('./job_type');
-const Job = require('./job');
+const Job = require('./job').default;
 
 // Định nghĩa các mối quan hệ giữa các model
 

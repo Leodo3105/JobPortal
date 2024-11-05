@@ -1,8 +1,8 @@
-const express = require('express');
-const { addIndustry, updateIndustry, deleteIndustry, getAllIndustries } = require('../controllers/admin/industryController');
-const { authenticateToken, authorizeRole } = require('../middleware/auth');
+import { Router } from 'express';
+import { addIndustry, updateIndustry, deleteIndustry, getAllIndustries } from '../controllers/admin/industryController.js';
+import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 
-const router = express.Router();
+const router = Router();
 
 // Thêm ngành nghề mới (chỉ admin)
 router.post('/', authenticateToken, authorizeRole('admin'), addIndustry);
@@ -16,4 +16,4 @@ router.delete('/:id', authenticateToken, authorizeRole('admin'), deleteIndustry)
 // Lấy danh sách tất cả ngành nghề (public)
 router.get('/', getAllIndustries);
 
-module.exports = router;
+export default router;

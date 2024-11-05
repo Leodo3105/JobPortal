@@ -1,6 +1,6 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
-const City = require('./city');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+import City from './city.js';
 
 const District = sequelize.define('District', {
   name: {
@@ -22,4 +22,4 @@ const District = sequelize.define('District', {
 
 
 
-module.exports = District;
+export default District;

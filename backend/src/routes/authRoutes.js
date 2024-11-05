@@ -1,9 +1,9 @@
-const express = require('express');
-const { register, login } = require('../controllers/admin/authController');
-const { lockUser, unlockUser } = require('../controllers/admin/authController'); // Sửa đường dẫn nếu cần
-const { authenticateToken, authorizeRole } = require('../middleware/auth');
+import { Router } from 'express';
+import { register, login } from '../controllers/admin/authController.js';
+import { lockUser, unlockUser } from '../controllers/admin/authController.js'; 
+import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 
-const router = express.Router();
+const router = Router();
 
 router.post('/register', register);
 router.post('/login', login);
@@ -13,4 +13,4 @@ router.put('/lock/:userId', authenticateToken, authorizeRole('admin'), lockUser)
 // Mở khóa tài khoản người dùng (chỉ admin)
 router.put('/unlock/:userId', authenticateToken, authorizeRole('admin'), unlockUser);
 
-module.exports = router;
+export default router;

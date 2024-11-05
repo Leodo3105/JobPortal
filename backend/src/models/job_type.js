@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); // Giả sử bạn đã cấu hình Sequelize trong db.js
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
 
 const JobType = sequelize.define('JobType', {
     id: {
@@ -17,4 +17,4 @@ const JobType = sequelize.define('JobType', {
     timestamps: false, // Không sử dụng timestamps tự động của Sequelize
 });
 
-module.exports = JobType;
+export default JobType;

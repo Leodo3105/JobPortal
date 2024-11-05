@@ -1,5 +1,7 @@
-const { Sequelize } = require('sequelize');
-require('dotenv').config();
+import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
+
+dotenv.config()
 
 const sequelize = new Sequelize(
   process.env.DB_DATABASE,
@@ -17,5 +19,10 @@ sequelize.authenticate()
   .then(() => console.log('Connected to PostgreSQL'))
   .catch((err) => console.error('Unable to connect to PostgreSQL:', err));
 
-module.exports = sequelize;
+// Exporting sync method
+export const sync = async () => {
+  await sequelize.sync({ force: false }); // or true for dropping and re-creating tables
+};
+
+export default sequelize;
 

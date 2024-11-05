@@ -1,7 +1,7 @@
-const { EmployerProfile } = require('../../models');
+import EmployerProfile from '../../models/employer_profile.js';
 
 // Cập nhật thông tin hồ sơ của employer
-exports.updateProfile = async (req, res) => {
+export async function updateProfile(req, res) {
     try {
         const employerId = req.user.id; // Lấy id từ token (id của employer đang đăng nhập)
         
@@ -30,4 +30,4 @@ exports.updateProfile = async (req, res) => {
         console.error('Failed to update profile:', error);
         res.status(500).json({ message: 'Failed to update profile' });
     }
-};
+}

@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
 
 const Country = sequelize.define('Country', {
   name: {
@@ -12,4 +12,4 @@ const Country = sequelize.define('Country', {
   timestamps: false,
 });
 
-module.exports = Country;
+export default Country;

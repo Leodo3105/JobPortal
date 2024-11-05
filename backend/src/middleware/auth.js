@@ -1,5 +1,10 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+import jwt from 'jsonwebtoken';  // Import toàn bộ module jsonwebtoken
+import dotenv from 'dotenv';      // Import dotenv
+
+dotenv.config(); // Load environment variables
+
+// Destructure verify từ jwt
+const { verify } = jwt;
 
 // Middleware để kiểm tra JWT token
 const authenticateToken = (req, res, next) => {
@@ -10,7 +15,7 @@ const authenticateToken = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = verify(token, process.env.JWT_SECRET);
     req.user = decoded;
     next();
   } catch (err) {
@@ -28,4 +33,5 @@ const authorizeRole = (role) => {
   };
 };
 
-module.exports = { authenticateToken, authorizeRole };
+// Sử dụng export dạng named exports cho từng middleware
+export { authenticateToken, authorizeRole };

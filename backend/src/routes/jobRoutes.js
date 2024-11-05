@@ -1,21 +1,21 @@
-const express = require('express');
-const router = express.Router();
-const jobController = require('../controllers/employer/jobController');
-const { authenticateToken, authorizeRole } = require('../middleware/auth');
+import { Router } from 'express';
+const router = Router();
+import { createJob, getJobs, getJobById, updateJob, deleteJob } from '../controllers/employer/jobController.js';
+import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 
 // Route để tạo công việc mới
-router.post('/', authenticateToken, authorizeRole('employer'), jobController.createJob);
+router.post('/', authenticateToken, authorizeRole('employer'), createJob);
 
 // Route để lấy danh sách công việc
-router.get('/', jobController.getJobs);
+router.get('/', getJobs);
 
 // Route để lấy chi tiết một công việc
-router.get('/:id', jobController.getJobById);
+router.get('/:id', getJobById);
 
 // Route để cập nhật công việc
-router.put('/:id', authenticateToken, authorizeRole('employer'), jobController.updateJob);
+router.put('/:id', authenticateToken, authorizeRole('employer'), updateJob);
 
 // Route để xóa công việc
-router.delete('/:id', authenticateToken, authorizeRole('employer'), jobController.deleteJob);
+router.delete('/:id', authenticateToken, authorizeRole('employer'), deleteJob);
 
-module.exports = router;
+export default router;

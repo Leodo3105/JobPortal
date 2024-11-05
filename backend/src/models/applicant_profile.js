@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
 
 const ApplicantProfile = sequelize.define('ApplicantProfile', {
   id: {
@@ -89,4 +89,4 @@ const ApplicantProfile = sequelize.define('ApplicantProfile', {
   timestamps: false,
 });
 
-module.exports = ApplicantProfile;
+export default ApplicantProfile;

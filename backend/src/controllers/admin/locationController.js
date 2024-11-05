@@ -1,8 +1,10 @@
-const { Country, City, District } = require('../../models');
+import Country from '../../models/country.js';
+import City from '../../models/city.js';
+import District from '../../models/district.js';
+import { Op } from 'sequelize'; // Để hỗ trợ cho tìm kiếm với iLike
 
-
-// Country 
-const addCountry = async (req, res) => {
+// Country
+export const addCountry = async (req, res) => {
   const { name } = req.body;
 
   try {
@@ -18,7 +20,7 @@ const addCountry = async (req, res) => {
   }
 };
 
-const updateCountry = async (req, res) => {
+export const updateCountry = async (req, res) => {
   const { id } = req.params;
   const { name } = req.body;
 
@@ -37,7 +39,7 @@ const updateCountry = async (req, res) => {
   }
 };
 
-const deleteCountry = async (req, res) => {
+export const deleteCountry = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -53,7 +55,7 @@ const deleteCountry = async (req, res) => {
   }
 };
 
-const getAllCountries = async (req, res) => {
+export const getAllCountries = async (_req, res) => {
   try {
     const countries = await Country.findAll();
     res.status(200).json(countries);
@@ -62,9 +64,25 @@ const getAllCountries = async (req, res) => {
   }
 };
 
+export const searchCountries = async (req, res) => {
+  const { name } = req.query;
 
-// City 
-const addCity = async (req, res) => {
+  try {
+    const countries = await Country.findAll({
+      where: {
+        name: {
+          [Op.iLike]: `%${name}%`
+        }
+      }
+    });
+    res.status(200).json(countries);
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred', error });
+  }
+};
+
+// City
+export const addCity = async (req, res) => {
   const { name, countryId } = req.body;
 
   try {
@@ -80,7 +98,7 @@ const addCity = async (req, res) => {
   }
 };
 
-const updateCity = async (req, res) => {
+export const updateCity = async (req, res) => {
   const { id } = req.params;
   const { name, countryId } = req.body;
 
@@ -107,7 +125,7 @@ const updateCity = async (req, res) => {
   }
 };
 
-const deleteCity = async (req, res) => {
+export const deleteCity = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -123,7 +141,7 @@ const deleteCity = async (req, res) => {
   }
 };
 
-const getAllCities = async (req, res) => {
+export const getAllCities = async (_req, res) => {
   try {
     const cities = await City.findAll({
       include: [{ model: Country, attributes: ['name'] }],
@@ -134,9 +152,26 @@ const getAllCities = async (req, res) => {
   }
 };
 
+export const searchCities = async (req, res) => {
+  const { name } = req.query;
 
-// District 
-const addDistrict = async (req, res) => {
+  try {
+    const cities = await City.findAll({
+      where: {
+        name: {
+          [Op.iLike]: `%${name}%`
+        }
+      },
+      include: [{ model: Country, attributes: ['name'] }]
+    });
+    res.status(200).json(cities);
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred', error });
+  }
+};
+
+// District
+export const addDistrict = async (req, res) => {
   const { name, cityId } = req.body;
 
   try {
@@ -152,7 +187,7 @@ const addDistrict = async (req, res) => {
   }
 };
 
-const updateDistrict = async (req, res) => {
+export const updateDistrict = async (req, res) => {
   const { id } = req.params;
   const { name, cityId } = req.body;
 
@@ -179,7 +214,7 @@ const updateDistrict = async (req, res) => {
   }
 };
 
-const deleteDistrict = async (req, res) => {
+export const deleteDistrict = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -195,7 +230,7 @@ const deleteDistrict = async (req, res) => {
   }
 };
 
-const getAllDistricts = async (req, res) => {
+export const getAllDistricts = async (_req, res) => {
   try {
     const districts = await District.findAll({
       include: [{ model: City, attributes: ['name'] }],
@@ -206,8 +241,20 @@ const getAllDistricts = async (req, res) => {
   }
 };
 
-module.exports = {
-  addCountry, updateCountry, deleteCountry, getAllCountries,
-  addCity, updateCity, deleteCity, getAllCities,
-  addDistrict, updateDistrict, deleteDistrict, getAllDistricts
+export const searchDistricts = async (req, res) => {
+  const { name } = req.query;
+
+  try {
+    const districts = await District.findAll({
+      where: {
+        name: {
+          [Op.iLike]: `%${name}%`
+        }
+      },
+      include: [{ model: City, attributes: ['name'] }]
+    });
+    res.status(200).json(districts);
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred', error });
+  }
 };

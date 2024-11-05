@@ -1,6 +1,6 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/db'); 
-const JobType = require('./job_type'); 
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js'; 
+import JobType from './job_type.js'; 
 
 const Job = sequelize.define('Job', {
     employer_id: {
@@ -87,4 +87,4 @@ const Job = sequelize.define('Job', {
 
 
 
-module.exports = Job;
+export default Job;

@@ -1,18 +1,19 @@
-const { Job, JobType } = require('../../models');
-const { Op } = require('sequelize'); 
+import Job from '../../models/job.js';
+import JobType from '../../models/job_type.js';
+import Op from 'sequelize'; 
 
 // Tạo công việc mới
-exports.createJob = async (req, res) => {
+export async function createJob(req, res) {
     try {
         const job = await Job.create(req.body);
         res.status(201).json({ message: 'Job created successfully', job });
     } catch (error) {
         res.status(500).json({ message: 'Failed to create job', error });
     }
-};
+}
 
 // Lấy danh sách công việc (với tùy chọn tìm kiếm)
-exports.getJobs = async (req, res) => {
+export async function getJobs(req, res) {
     try {
         const { title, company_name } = req.query;
         let where = {};
@@ -32,10 +33,10 @@ exports.getJobs = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch jobs', error });
     }
-};
+}
 
 // Lấy chi tiết một công việc
-exports.getJobById = async (req, res) => {
+export async function getJobById(req, res) {
     try {
         const job = await Job.findByPk(req.params.id, {
             include: { model: JobType, attributes: ['name'] }, // Bao gồm tên loại công việc
@@ -45,10 +46,10 @@ exports.getJobById = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Failed to fetch job', error });
     }
-};
+}
 
 // Cập nhật công việc
-exports.updateJob = async (req, res) => {
+export async function updateJob(req, res) {
     try {
         const job = await Job.findByPk(req.params.id);
         if (!job) return res.status(404).json({ message: 'Job not found' });
@@ -58,10 +59,10 @@ exports.updateJob = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Failed to update job', error });
     }
-};
+}
 
 // Xóa công việc
-exports.deleteJob = async (req, res) => {
+export async function deleteJob(req, res) {
     try {
         const job = await Job.findByPk(req.params.id);
         if (!job) return res.status(404).json({ message: 'Job not found' });
@@ -71,4 +72,4 @@ exports.deleteJob = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Failed to delete job', error });
     }
-};
+}

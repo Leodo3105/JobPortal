@@ -1,9 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const { updateProfile } = require('../controllers/employer/employerController');
-const { authenticateToken, authorizeRole } = require('../middleware/auth');
+import { Router } from 'express';
+const router = Router();
+import { updateProfile } from '../controllers/employer/employerController.js';
+import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 
 // Route để cập nhật hồ sơ employer (sau khi đăng nhập)
 router.put('/profile', authenticateToken, authorizeRole('employer'), updateProfile);
 
-module.exports = router;
+export default router;
