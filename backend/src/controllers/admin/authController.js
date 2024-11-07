@@ -1,33 +1,64 @@
 import { hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../../models/user.js';
+import ApplicantProfiles from '../../models/applicant_profile.js';
+import EmployerProfiles from '../../models/employer_profile.js'; // 
 import dotenv from 'dotenv';
+import sequelize  from '../../config/db.js';
 
 dotenv.config();
 
-// Đăng ký người dùng mới
+// Đăng ký người dùng 
 export const register = async (req, res) => {
   const { email, password, role } = req.body;
 
+  // Bắt đầu transaction
+  const transaction = await sequelize.transaction();
+
   try {
+    // Kiểm tra xem email đã tồn tại chưa
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ message: 'Email is already registered' });
     }
 
+    // Mã hóa mật khẩu
     const hashedPassword = await hash(password, 10);
+
+    // Tạo tài khoản mới
     const newUser = await User.create({
       email,
       password: hashedPassword,
-      role,
+      role: role || 'applicant',
       isLocked: false,
-    });
+    }, { transaction });
+
+    // Kiểm tra vai trò và tạo bản ghi applicant_profiles nếu là applicant
+    if (newUser.role === 'applicant') {
+      await ApplicantProfiles.create({
+        user_id: newUser.id, // Sử dụng newUser.id làm userId
+        email: newUser.email
+      }, { transaction });
+    }
+
+    if (newUser.role === 'employer') {
+      await EmployerProfiles.create({
+        user_id: newUser.id,
+        email: newUser.email
+      }, { transaction });
+    }
+
+    // Commit transaction
+    await transaction.commit();
 
     res.status(201).json({ message: 'User created successfully', user: newUser });
   } catch (error) {
+    // Rollback transaction nếu có lỗi
+    await transaction.rollback();
     res.status(500).json({ message: 'An error occurred', error });
   }
 };
+
 
 // Đăng nhập người dùng
 export const login = async (req, res) => {

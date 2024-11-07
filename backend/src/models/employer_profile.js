@@ -1,82 +1,84 @@
 import { DataTypes } from 'sequelize';
-import sequelize from '../config/db.js';// Đảm bảo đường dẫn tới file cấu hình đúng
+import sequelize from '../config/db.js';
 
-const EmployerProfile = sequelize.define('EmployerProfile', {
+const EmployerProfiles = sequelize.define('EmployerProfile', {
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
     user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: 'users', 
-            key: 'id'
-        },
-        onDelete: 'CASCADE'
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
     },
     company_name: {
-        type: DataTypes.STRING(255),
-        allowNull: true
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     website: {
-        type: DataTypes.STRING(255),
-        allowNull: true
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     address: {
-        type: DataTypes.STRING(255),
-        allowNull: true
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     district_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-            model: 'districts',
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'districts',
+        key: 'id',
+      },
     },
     city_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-            model: 'cities', 
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'cities',
+        key: 'id',
+      },
     },
     country_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-            model: 'countries', 
-            key: 'id'
-        }
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'countries',
+        key: 'id',
+      },
     },
     description: {
-        type: DataTypes.TEXT,
-        allowNull: true
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
     social_media_links: {
-        type: DataTypes.JSONB, // JSONB phù hợp với PostgreSQL để lưu trữ các liên kết mạng xã hội
-        allowNull: true
+      type: DataTypes.JSONB,
+      allowNull: true,
     },
     logo: {
-        type: DataTypes.STRING(255),
-        allowNull: true
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     created_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
     },
     updated_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW
-    }
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
 }, {
     tableName: 'employer_profiles',
-    timestamps: false 
+    timestamps: false,
 });
-
-export default EmployerProfile;
+  
+export default EmployerProfiles;

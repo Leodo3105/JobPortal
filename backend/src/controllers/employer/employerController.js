@@ -1,33 +1,29 @@
-import EmployerProfile from '../../models/employer_profile.js';
+import EmployerProfiles from '../../models/employer_profile.js';
 
-// Cập nhật thông tin hồ sơ của employer
-export async function updateProfile(req, res) {
-    try {
-        const employerId = req.user.id; // Lấy id từ token (id của employer đang đăng nhập)
-        
-        // Tìm employer profile trong db
-        let profile = await EmployerProfile.findOne({ where: { user_id: employerId } });
-        
-        if (!profile) {
-            return res.status(404).json({ message: "Employer profile not found" });
-        }
+// Cập nhật thông tin hồ sơ của Employer
+export const updateProfile = async (req, res) => {
+  const { userId } = req.params; // Lấy userId từ URL
+  const {
+    company_name, website, address, district_id, city_id, country_id,
+    description, social_media_links, logo,
+  } = req.body; // Lấy thông tin từ body
 
-        // Cập nhật thông tin từ request body
-        const { name, district_id, city_id, country_id, website, contact_email, phone } = req.body;
-
-        if (name !== undefined) profile.name = name;
-        if (district_id !== undefined) profile.district_id = district_id;
-        if (city_id !== undefined) profile.city_id = city_id;
-        if (country_id !== undefined) profile.country_id = country_id;
-        if (website !== undefined) profile.website = website;
-        if (contact_email !== undefined) profile.contact_email = contact_email;
-        if (phone !== undefined) profile.phone = phone;
-
-        await profile.save(); // Lưu thay đổi vào database
-
-        res.status(200).json({ message: 'Profile updated successfully', profile });
-    } catch (error) {
-        console.error('Failed to update profile:', error);
-        res.status(500).json({ message: 'Failed to update profile' });
+  try {
+    // Kiểm tra xem hồ sơ employer có tồn tại không
+    const employerProfile = await EmployerProfiles.findOne({ where: { user_id: userId } });
+    if (!employerProfile) {
+      return res.status(404).json({ message: 'Employer profile not found' });
     }
-}
+
+    // Cập nhật thông tin hồ sơ
+    await employerProfile.update({
+      company_name, website, address, district_id, city_id, country_id,
+      description, social_media_links, logo,
+    });
+
+    res.status(200).json({ message: 'Profile updated successfully', profile: employerProfile });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while updating the profile', error });
+  }
+};

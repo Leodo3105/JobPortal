@@ -5,7 +5,7 @@ import industryRoutes from './src/routes/industryRoutes.js';
 import locationRoutes from './src/routes/locationRoutes.js';
 import jobRoutes from './src/routes/jobRoutes.js';
 import employerRoutes from './src/routes/employerRoutes.js';
-// import applicantRoutes from './src/routes/applicantRoutes.js';
+import applicantRoutes from './src/routes/applicantRoutes.js';
 import { sync } from './src/config/db.js';
 import dotenv from 'dotenv';
 
@@ -20,7 +20,7 @@ app.use('/api/industries', industryRoutes);
 app.use('/api/locations', locationRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/employer', employerRoutes);
-// app.use('/api', applicantRoutes);
+app.use('/api/applicant', applicantRoutes);
 
 // Protected Routes
 app.use('/api/secure', secureRoutes);

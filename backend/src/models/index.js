@@ -3,6 +3,7 @@ const sequelize = require('../config/db'); // Đường dẫn đúng tới file 
 // Import tất cả các model
 const User = require('./user');
 const EmployerProfile = require('./employer_profile').default;
+const ApplicantProfile = require('./applicant_profile').default;
 const District = require('./district');
 const City = require('./city');
 const Country = require('./country');
@@ -15,6 +16,10 @@ const Job = require('./job').default;
 // User - EmployerProfile: Một-một
 EmployerProfile.belongsTo(User, { foreignKey: 'user_id' });
 User.hasOne(EmployerProfile, { foreignKey: 'user_id' });
+
+// User - ApplicantProfile: Một-một
+ApplicantProfile.belongsTo(User, { foreignKey: 'user_id' });
+User.hasOne(ApplicantProfile, { foreignKey: 'user_id' });
 
 // EmployerProfile - Địa chỉ (District, City, Country): Một-nhiều
 EmployerProfile.belongsTo(District, { foreignKey: 'district_id' });

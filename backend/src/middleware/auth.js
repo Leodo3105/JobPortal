@@ -33,5 +33,5 @@ const authorizeRole = (role) => {
   };
 };
 
-// Sử dụng export dạng named exports cho từng middleware
+
 export { authenticateToken, authorizeRole };

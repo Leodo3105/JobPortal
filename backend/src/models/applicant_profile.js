@@ -11,61 +11,13 @@ const ApplicantProfile = sequelize.define('ApplicantProfile', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'users', // Tên bảng tham chiếu
+      model: 'users',
       key: 'id',
     },
     onDelete: 'CASCADE',
   },
-  full_name: {
+  fullname: {  // Đảm bảo khớp với tên cột trong cơ sở dữ liệu
     type: DataTypes.STRING,
-    allowNull: true,
-  },
-  date_of_birth: {
-    type: DataTypes.DATE,
-    allowNull: true,
-  },
-  phone_number: {
-    type: DataTypes.STRING(20),
-    allowNull: true,
-  },
-  address: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  district_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'districts',
-      key: 'id',
-    },
-    allowNull: true,
-  },
-  city_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'cities',
-      key: 'id',
-    },
-    allowNull: true,
-  },
-  country_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'countries',
-      key: 'id',
-    },
-    allowNull: true,
-  },
-  education: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  experience: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  skills: {
-    type: DataTypes.TEXT,
     allowNull: true,
   },
   avatar: {
@@ -74,6 +26,66 @@ const ApplicantProfile = sequelize.define('ApplicantProfile', {
   },
   cv: {
     type: DataTypes.STRING,
+    allowNull: true,
+  },
+  district_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'districts',
+      key: 'id',
+    },
+  },
+  city_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'cities',
+      key: 'id',
+    },
+  },
+  country_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'countries',
+      key: 'id',
+    },
+  },
+  description: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  experience: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  education: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  skills: {
+    type: DataTypes.JSONB,
+    allowNull: true,
+  },
+  social_media_links: {
+    type: DataTypes.JSONB,
+    allowNull: true,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  date_of_birth: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },
+  address: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  phone: {  
+    type: DataTypes.STRING(15),
     allowNull: true,
   },
   created_at: {

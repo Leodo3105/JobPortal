@@ -4,6 +4,6 @@ import { updateProfile } from '../controllers/employer/employerController.js';
 import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 
 // Route để cập nhật hồ sơ employer (sau khi đăng nhập)
-router.put('/profile', authenticateToken, authorizeRole('employer'), updateProfile);
+router.put('/profile/:userId', authenticateToken, authorizeRole('employer'), updateProfile);
 
 export default router;
