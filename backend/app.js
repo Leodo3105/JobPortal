@@ -6,6 +6,7 @@ import locationRoutes from './src/routes/locationRoutes.js';
 import jobRoutes from './src/routes/jobRoutes.js';
 import employerRoutes from './src/routes/employerRoutes.js';
 import applicantRoutes from './src/routes/applicantRoutes.js';
+import profileRoutes from './src/routes/profileRoutes.js';
 import { sync } from './src/config/db.js';
 import dotenv from 'dotenv';
 
@@ -21,6 +22,7 @@ app.use('/api/locations', locationRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/employer', employerRoutes);
 app.use('/api/applicant', applicantRoutes);
+app.use('/api/admin', profileRoutes);
 
 // Protected Routes
 app.use('/api/secure', secureRoutes);
