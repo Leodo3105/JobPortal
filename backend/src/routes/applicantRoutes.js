@@ -1,9 +1,9 @@
-// import { Router } from 'express';
-// const router = Router();
-// import { getAllApplicants, getApplicantById, deleteApplicant } from '../controllers/admin/applicantProfileController.js';
+import { Router } from 'express';
+const router = Router();
+import { updateApplicant } from '../controllers/applicant/applicantProfileController.js'; // Hàm controller để cập nhật hồ sơ
+import { authenticateToken, authorizeRole } from '../middleware/auth.js'; // Middleware xác thực và phân quyền
 
-// router.get('/admin/applicants', getAllApplicants);
-// router.get('/admin/applicants/:id', getApplicantById);
-// router.delete('/admin/applicants/:id', deleteApplicant);
+// Route để cập nhật hồ sơ ứng viên
+router.put('/profile', authenticateToken, authorizeRole('applicant'), updateApplicant);
 
-// export default router;
+export default router;
