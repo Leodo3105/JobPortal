@@ -7,3 +7,5 @@ import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 router.put('/profile/:userId', authenticateToken, authorizeRole('employer'), updateProfile);
 
 export default router;
+// Route để xem danh sách ứng viên apply của employer (sau khi đăng nhập)
+router.get('/jobs/:Id/applicants', authenticateToken, authorizeRole('employer'), getApplicantsForJob);
