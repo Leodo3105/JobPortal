@@ -1,7 +1,6 @@
 import ApplicantProfiles from '../../models/applicant_profile.js';
 import EmployerProfiles from '../../models/employer_profile.js';
 
-
 // Ứng viên
 // Lấy danh sách 
 export const getApplicantProfiles = async (req, res) => {
@@ -51,7 +50,6 @@ export const deleteApplicantProfile = async (req, res) => {
 };
 
 // Nhà tuyển dụng
-
 // Lấy danh sách hồ sơ 
 export const getEmployerProfiles = async (req, res) => {
     try {

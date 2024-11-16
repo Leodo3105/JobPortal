@@ -1,4 +1,7 @@
-import EmployerProfiles from '../../models/employer_profile.js';
+import ApplicantProfile from '../../models/applicant_profile.js';
+import EmployerProfile from '../../models/employer_profile.js';
+import Applicant from '../../models/applicant.js';
+import Job from '../../models/job.js';
 
 // Cập nhật thông tin hồ sơ của Employer
 export const updateProfile = async (req, res) => {
@@ -10,7 +13,7 @@ export const updateProfile = async (req, res) => {
 //
   try {
     // Kiểm tra xem hồ sơ employer có tồn tại không
-    const employerProfile = await EmployerProfiles.findOne({ where: { user_id: userId } });
+    const employerProfile = await EmployerProfile.findOne({ where: { user_id: userId } });
     if (!employerProfile) {
       return res.status(404).json({ message: 'Employer profile not found' });
     }
@@ -28,36 +31,36 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-
-import JobApplication from '../../models/job_application.js';
-import ApplicantProfiles from '../../models/applicant_profile.js';
-
 // Xem danh sách ứng viên đã apply vào job
 export const getApplicantsForJob = async (req, res) => {
-  const { jobId } = req.params; // Lấy jobId từ URL
+  const { jobId } = req.params;
 
   try {
-    // Tìm các ứng viên đã ứng tuyển vào công việc này
-    const applications = await JobApplication.findAll({
+    const job = await Job.findOne({
       where: { id: jobId },
       include: [
         {
-          model: ApplicantProfiles,
-          attributes: ['id', 'fullname', 'phone', 'email', 'address', 'city_id', 'country_id'],
+          model: Applicant,
+          as: 'applicants',
+          include: [
+            {
+              model: ApplicantProfile,
+              as: 'profile',
+              attributes: ['id', 'fullname', 'phone', 'email'],
+            },
+          ],
         },
       ],
     });
 
-    if (!applications || applications.length === 0) {
+    if (!job || job.applicants.length === 0) {
       return res.status(404).json({ message: 'No applicants found for this job' });
     }
 
-    // Lấy danh sách ứng viên từ các bản ghi `JobApplication`
-    const applicants = applications.map((application) => application.ApplicantProfile);
-
-    res.status(200).json({ applicants });
+    res.status(200).json(job.applicants);
   } catch (error) {
     console.error('Failed to retrieve applicants:', error);
     res.status(500).json({ message: 'Failed to retrieve applicants', error });
   }
 };
+

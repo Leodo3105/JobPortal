@@ -1,47 +1,27 @@
-import Applicant from '../models/applicant.js'; 
-import Job from '../models/job.js'; 
-import ApplicantProfile from '../models/applicant_profile.js';
+import ApplicantProfiles from '../../models/applicant_profile.js';
 
-const applyJob = async (applicantProfileId, jobId) => {
-    try {
-        // Kiểm tra xem ứng viên có tồn tại không
-        const applicantProfile = await ApplicantProfile.findByPk(applicantProfileId);
-        if (!applicantProfile) {
-            throw new Error('Ứng viên không tồn tại');
-        }
+export const updateProfile = async (req, res) => {
+  const { userId } = req.params; // Lấy userId từ URL
+  const {
+    fullname, date_of_birth, phone, address, district_id, city_id, country_id, education, experience, skills, social_media_links,
+  } = req.body; // Lấy thông tin từ body
 
-        // Kiểm tra xem công việc có tồn tại không
-        const job = await Job.findByPk(jobId);
-        if (!job) {
-            throw new Error('Công việc không tồn tại');
-        }
-
-        // Kiểm tra ứng viên đã ứng tuyển vào công việc này chưa
-        const existingApplicant = await Applicant.findOne({
-            where: {
-                applicant_profile_id: applicantProfileId,
-                job_id: jobId
-            }
-        });
-
-        if (existingApplicant) {
-            throw new Error('Bạn đã ứng tuyển vào công việc này rồi');
-        }
-
-        // Tạo bản ghi mới trong bảng applicants
-        const newApplicant = await Applicant.create({
-            applicant_profile_id: applicantProfileId,
-            job_id: jobId,
-            status: 'Pending', // Mặc định trạng thái là 'Pending'
-        });
-
-        // Trả về thông tin ứng viên vừa được thêm vào
-        return newApplicant;
-
-    } catch (error) {
-        console.error('Lỗi khi ứng tuyển:', error.message);
-        throw error; // Ném lỗi ra ngoài để xử lý ở nơi gọi
+  try {
+    // Kiểm tra xem profile của applicant có tồn tại không
+    const applicantProfile = await ApplicantProfiles.findOne({ where: { user_id: userId } });
+    if (!applicantProfile) {
+      return res.status(404).json({ message: 'Applicant profile not found' });
     }
-};
 
-export default applyJob;
+    // Cập nhật thông tin profile
+    await applicantProfile.update({
+      fullname, date_of_birth, phone, address, district_id, city_id, country_id,
+      education, experience, skills, social_media_links,
+    });
+
+    res.status(200).json({ message: 'Profile updated successfully', profile: applicantProfile });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred while updating the profile', error });
+  }
+};

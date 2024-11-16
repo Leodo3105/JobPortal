@@ -8,6 +8,7 @@ import employerRoutes from './src/routes/employerRoutes.js';
 import applicantRoutes from './src/routes/applicantRoutes.js';
 import profileRoutes from './src/routes/profileRoutes.js';
 import { sync } from './src/config/db.js';
+
 import dotenv from 'dotenv';
 
 dotenv.config();

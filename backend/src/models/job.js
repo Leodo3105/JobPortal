@@ -1,8 +1,14 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/db.js'; 
 import JobType from './job_type.js'; 
+import Industry from './industry.js';
 
 const Job = sequelize.define('Job', {
+    id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+    },
     employer_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -11,6 +17,14 @@ const Job = sequelize.define('Job', {
             key: 'id',
         },
         onDelete: 'CASCADE',
+    },
+    industry_id: { // Thêm cột industry_id
+        type: DataTypes.INTEGER,
+        references: {
+            model: Industry, // Liên kết với bảng industries
+            key: 'id',
+        },
+        onDelete: 'SET NULL', // Hành động khi industry bị xóa, bạn có thể thay đổi theo nhu cầu
     },
     title: {
         type: DataTypes.STRING,
@@ -40,7 +54,7 @@ const Job = sequelize.define('Job', {
     job_type_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'job_types', // Liên kết với bảng job_types
+            model: JobType, // Liên kết với bảng job_types
             key: 'id',
         },
     },
@@ -84,7 +98,5 @@ const Job = sequelize.define('Job', {
     tableName: 'jobs', // Đặt tên bảng là 'jobs'
     timestamps: false, // Không sử dụng timestamps tự động của Sequelize
 });
-
-
 
 export default Job;
