@@ -5,15 +5,15 @@ import { authenticateToken, authorizeRole } from '../middleware/auth.js';
 const router = Router();
 
 // Thêm ngành nghề mới (chỉ admin)
-router.post('/', authenticateToken, authorizeRole('admin'), addIndustry);
+router.post('/add', authenticateToken, authorizeRole('admin'), addIndustry);
 
 // Cập nhật ngành nghề (chỉ admin)
-router.put('/:id', authenticateToken, authorizeRole('admin'), updateIndustry);
+router.put('/update/:id', authenticateToken, authorizeRole('admin'), updateIndustry);
 
 // Xóa ngành nghề (chỉ admin)
-router.delete('/:id', authenticateToken, authorizeRole('admin'), deleteIndustry);
+router.delete('/delete/:id', authenticateToken, authorizeRole('admin'), deleteIndustry);
 
 // Lấy danh sách tất cả ngành nghề (public)
-router.get('/', getAllIndustries);
+router.get('/list', getAllIndustries);
 
 export default router;

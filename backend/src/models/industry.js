@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../config/db.js';
 
 const Industry = sequelize.define('Industry', {
-  id: { // Thêm cột id
+  id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,

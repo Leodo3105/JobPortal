@@ -6,9 +6,10 @@ import Op from 'sequelize';
 export async function createJob(req, res) {
     try {
         const job = await Job.create(req.body);
-        res.status(201).json({ message: 'Job created successfully', job });
+        res.status(201).json({ code: 'JOB_CREATED', message: 'Job created successfully', job });
     } catch (error) {
-        res.status(500).json({ message: 'Failed to create job', error });
+        console.error('Error creating job:', error);
+        res.status(500).json({ code: 'JOB_CREATION_FAILED', message: 'Failed to create job', error: error.message });
     }
 }
 
@@ -16,22 +17,29 @@ export async function createJob(req, res) {
 export async function getJobs(req, res) {
     try {
         const { title, company_name } = req.query;
-        let where = {};
+        const where = {};
 
+        // Add search conditions if provided
         if (title) {
-            where.title = { [Op.iLike]: `%${title}%` }; // Tìm kiếm theo tiêu đề
+            where.title = { [Op.iLike]: `%${title}%` }; // Search by title
         }
         if (company_name) {
-            where.company_name = { [Op.iLike]: `%${company_name}%` }; // Tìm kiếm theo tên công ty
+            where.company_name = { [Op.iLike]: `%${company_name}%` }; // Search by company name
         }
 
         const jobs = await Job.findAll({
             where,
-            include: { model: JobType, attributes: ['name'] }, // Bao gồm tên loại công việc
+            include: { model: JobType, attributes: ['name'] }, // Include job type name
         });
-        res.status(200).json(jobs);
+        
+        if (jobs.length === 0) {
+            return res.status(404).json({ code: 'NO_JOBS_FOUND', message: 'No jobs found matching the criteria' });
+        }
+
+        res.status(200).json({ code: 'JOBS_RETRIEVED', message: 'Jobs retrieved successfully', jobs });
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch jobs', error });
+        console.error('Error fetching jobs:', error);
+        res.status(500).json({ code: 'JOB_FETCH_FAILED', message: 'Failed to fetch jobs', error: error.message });
     }
 }
 
@@ -39,12 +47,15 @@ export async function getJobs(req, res) {
 export async function getJobById(req, res) {
     try {
         const job = await Job.findByPk(req.params.id, {
-            include: { model: JobType, attributes: ['name'] }, // Bao gồm tên loại công việc
+            include: { model: JobType, attributes: ['name'] },
         });
-        if (!job) return res.status(404).json({ message: 'Job not found' });
-        res.status(200).json(job);
+        if (!job) {
+            return res.status(404).json({ code: 'JOB_NOT_FOUND', message: 'Job not found' });
+        }
+        res.status(200).json({ code: 'JOB_RETRIEVED', message: 'Job retrieved successfully', job });
     } catch (error) {
-        res.status(500).json({ message: 'Failed to fetch job', error });
+        console.error('Error fetching job by ID:', error);
+        res.status(500).json({ code: 'JOB_FETCH_FAILED', message: 'Failed to fetch job', error: error.message });
     }
 }
 
@@ -52,12 +63,15 @@ export async function getJobById(req, res) {
 export async function updateJob(req, res) {
     try {
         const job = await Job.findByPk(req.params.id);
-        if (!job) return res.status(404).json({ message: 'Job not found' });
+        if (!job) {
+            return res.status(404).json({ code: 'JOB_NOT_FOUND', message: 'Job not found' });
+        }
 
         await job.update(req.body);
-        res.status(200).json({ message: 'Job updated successfully', job });
+        res.status(200).json({ code: 'JOB_UPDATED', message: 'Job updated successfully', job });
     } catch (error) {
-        res.status(500).json({ message: 'Failed to update job', error });
+        console.error('Error updating job:', error);
+        res.status(500).json({ code: 'JOB_UPDATE_FAILED', message: 'Failed to update job', error: error.message });
     }
 }
 
@@ -65,11 +79,14 @@ export async function updateJob(req, res) {
 export async function deleteJob(req, res) {
     try {
         const job = await Job.findByPk(req.params.id);
-        if (!job) return res.status(404).json({ message: 'Job not found' });
+        if (!job) {
+            return res.status(404).json({ code: 'JOB_NOT_FOUND', message: 'Job not found' });
+        }
 
         await job.destroy();
-        res.status(200).json({ message: 'Job deleted successfully' });
+        res.status(200).json({ code: 'JOB_DELETED', message: 'Job deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Failed to delete job', error });
+        console.error('Error deleting job:', error);
+        res.status(500).json({ code: 'JOB_DELETION_FAILED', message: 'Failed to delete job', error: error.message });
     }
 }

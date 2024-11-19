@@ -20,5 +20,7 @@ const City = sequelize.define('City', {
   timestamps: false,
 });
 
+City.belongsTo(Country, { foreignKey: 'country_id', as: 'country' });
+Country.hasMany(City, { foreignKey: 'country_id', as: 'cities' });
 
 export default City;

@@ -20,6 +20,7 @@ const District = sequelize.define('District', {
   timestamps: false,
 });
 
-
+District.belongsTo(City, { foreignKey: 'city_id' });
+City.hasMany(District, { foreignKey: 'city_id' });
 
 export default District;

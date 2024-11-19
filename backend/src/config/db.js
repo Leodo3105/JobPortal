@@ -21,7 +21,7 @@ sequelize.authenticate()
 
 // Exporting sync method
 export const sync = async () => {
-  await sequelize.sync({ force: false }); // or true for dropping and re-creating tables
+  await sequelize.sync({ alert: false }); // or true for dropping and re-creating tables
 };
 
 export default sequelize;

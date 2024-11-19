@@ -6,10 +6,16 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
+    validate: {
+      isEmail: true, 
+    },
   },
   password: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      len: [8, 100],
+    },
   },
   role: {
     type: DataTypes.STRING,
@@ -23,5 +29,7 @@ const User = sequelize.define('User', {
   tableName: 'users',
   timestamps: false,
 });
+
+
 
 export default User;
